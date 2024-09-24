@@ -1,36 +1,40 @@
-'use server'
-import mongoose from 'mongoose';
+"use server";
+import mongoose from "mongoose";
 
-const mongoUri = process.env.DATABASE_URL || "mongodb://mongo:27017/app_data";
+const mongoUri =
+  process.env.DATABASE_URL ||
+  "mongodb+srv://soumya:VL0noA2IgbyXmskx@cluster0.wzzb1.mongodb.net/connect";
 
 if (!mongoUri) {
-    throw new Error('Please define the DATABASE_URL environment variable inside .env.local');
+  throw new Error(
+    "Please define the DATABASE_URL environment variable inside .env.local"
+  );
 }
 
 type ConnectionObject = {
-    isConnected?: number;
+  isConnected?: number;
 };
 
 const connection: ConnectionObject = {};
 
 const connectToDatabase = async () => {
-    if (connection.isConnected) {
-        return;
-    }
+  if (connection.isConnected) {
+    return;
+  }
 
-    try {
-        const db = await mongoose.connect(mongoUri);
-        connection.isConnected = db.connections[0]?.readyState;
+  try {
+    const db = await mongoose.connect(mongoUri);
+    connection.isConnected = db.connections[0]?.readyState;
 
-        if (connection.isConnected === 1) { 
-            console.log('Connected to MongoDB');
-        } else {
-            console.error('MongoDB connection state is not connected');
-        }
-    } catch (error) {
-        console.error('Error connecting to MongoDB:', error);
-        throw new Error('Failed to connect to MongoDB');
+    if (connection.isConnected === 1) {
+      console.log("Connected to MongoDB");
+    } else {
+      console.error("MongoDB connection state is not connected");
     }
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    throw new Error("Failed to connect to MongoDB");
+  }
 };
 
 export default connectToDatabase;
