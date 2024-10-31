@@ -15,7 +15,7 @@ const MyAppBar = () => {
   const id = anchorEl ? "user-popover" : undefined;
 
   return (
-    <nav className="bg-gray-900 h-[75px] p-4 shadow-lg sticky top-0">
+    <nav className="bg-gray-900 h-[75px] p-4 shadow-lg sticky top-0 flex items-center">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo or Brand */}
         <div className="text-white text-xl font-bold">

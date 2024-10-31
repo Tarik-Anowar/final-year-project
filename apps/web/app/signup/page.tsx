@@ -5,6 +5,19 @@ import { useRouter } from "next/navigation";
 import UploadImage from "../components/uploadImage";
 import signUpHandler from "../actions/submitSignupData";
 
+const options = [
+  "Football",
+  "Global News",
+  "Politics",
+  "Cricket",
+  "Stand Up",
+  "Technology",
+  "Music",
+  "Movies",
+  "Gaming",
+  "Travel",
+];
+
 const SignUp = () => {
   const router = useRouter();
   const [name, setName] = useState<string>("");
@@ -12,6 +25,7 @@ const SignUp = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [signUpSuccess, setSignUpSuccess] = useState<boolean | null>(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -30,6 +44,7 @@ const SignUp = () => {
       email,
       password,
       imageUrl,
+      interests: selectedOptions,
     };
 
     console.log("Sign-up data:", signUpData);
@@ -44,6 +59,7 @@ const SignUp = () => {
         setPassword("");
         setConfirmPassword("");
         setImageUrl("");
+        setSelectedOptions([]);
         setSnackbarMessage("Sign-up successful! Redirecting...");
         setSignUpSuccess(true);
         setSnackbarOpen(true);
@@ -72,13 +88,21 @@ const SignUp = () => {
     setImageUrl(url);
   };
 
+  const handleOptionChange = (option: string) => {
+    if (selectedOptions.includes(option)) {
+      setSelectedOptions(selectedOptions.filter((o) => o !== option));
+    } else {
+      setSelectedOptions([...selectedOptions, option]);
+    }
+  };
+
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[calc(100vh-75px)] bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+    <div className="flex flex-col items-center justify-center bg-gray-100">
+      <div className="bg-white p-6 rounded-lg shadow-lg max-w-md my-10">
         <h1 className="text-2xl font-bold mb-4 text-center">Sign Up</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -118,6 +142,23 @@ const SignUp = () => {
             cloudName="dmaxxegxu"
             onUpload={handleImageUpload}
           />
+          <div>
+            <h2 className="text-lg font-medium mb-2">Select Your Interests</h2>
+            <div className="grid grid-cols-2 gap-2">
+              {options.map((option) => (
+                <label key={option} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    value={option}
+                    checked={selectedOptions.includes(option)}
+                    onChange={() => handleOptionChange(option)}
+                    className="mr-2"
+                  />
+                  {option}
+                </label>
+              ))}
+            </div>
+          </div>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition"

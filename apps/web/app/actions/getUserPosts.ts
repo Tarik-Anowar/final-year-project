@@ -21,7 +21,7 @@ export default async function getUserPosts() {
     // Connect to the database and save the post
     await connectToDatabase();
     const allPosts = await Post.find({ creator: curr_user_id }).select(
-      "topic description"
+      "_id topic description"
     );
 
     console.log(`All Posts with ID: ${curr_user_id}\n`);

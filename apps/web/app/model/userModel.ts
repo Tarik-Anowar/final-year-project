@@ -11,6 +11,7 @@ export interface IUser extends Document {
   friends: Types.ObjectId[];
   resetPasswordToken?: string;
   resetPasswordExpire?: Date;
+  interests: string[];
 }
 
 const userSchema = new Schema<IUser>(
@@ -33,6 +34,11 @@ const userSchema = new Schema<IUser>(
       minlength: [8, "Password should be at least 8 characters"],
       select: false,
     },
+    interests: [
+      {
+        type: String,
+      },
+    ],
     image: { type: String },
     friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
     resetPasswordToken: { type: String },

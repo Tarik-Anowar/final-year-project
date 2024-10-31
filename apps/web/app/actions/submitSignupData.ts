@@ -6,6 +6,7 @@ interface SignUpData {
   email: string;
   password: string;
   imageUrl?: string;
+  interests: string[];
 }
 
 export default async function signUpHandler({
@@ -13,6 +14,7 @@ export default async function signUpHandler({
   email,
   password,
   imageUrl,
+  interests,
 }: SignUpData) {
   try {
     const newUser = new User({
@@ -20,7 +22,10 @@ export default async function signUpHandler({
       email,
       password: password,
       image: imageUrl || "",
+      interests,
     });
+    console.log(newUser);
+
     await connectToDatabase();
     const user = await newUser.save();
 
